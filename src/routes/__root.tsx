@@ -52,11 +52,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nosso Sonho — Sites de casamento elegantes" },
+      { title: "Baita casamento — Sites de casamento elegantes" },
       { name: "description", content: "Crie um mini site de casamento sofisticado em minutos." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Nosso Sonho" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Baita casamento — Sites de casamento elegantes" },
+      { name: "twitter:title", content: "Baita casamento — Sites de casamento elegantes" },
+      { property: "og:description", content: "Crie um mini site de casamento sofisticado em minutos." },
+      { name: "twitter:description", content: "Crie um mini site de casamento sofisticado em minutos." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dbba0b71-77a1-4021-aeba-e5f3b9697776/id-preview-d32ed2d5--b9731a25-5c2d-4298-9234-72085618fb90.lovable.app-1779556280842.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dbba0b71-77a1-4021-aeba-e5f3b9697776/id-preview-d32ed2d5--b9731a25-5c2d-4298-9234-72085618fb90.lovable.app-1779556280842.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
