@@ -26,7 +26,7 @@ export function CTASection() {
               Criem agora o site de casamento de vocês. Sem cartão de crédito, sem fricção.
             </p>
             <a
-              href="#"
+              href="/auth"
               className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-full bg-background text-foreground text-sm tracking-wide hover:bg-accent transition-colors shadow-soft"
             >
               Criar nosso site agora <span>→</span>
