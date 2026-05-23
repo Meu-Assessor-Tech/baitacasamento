@@ -16,9 +16,9 @@ export const Route = createFileRoute("/dashboard/$siteId")({
 });
 
 type Site = any;
-type Photo = { id: string; image_url: string; caption: string };
-type Gift = { id: string; name: string; description: string; price: number; image_url: string | null; link: string | null };
-type Suggestion = { id: string; name: string; description: string; category: string; suggested_price: number; image_url: string };
+type Photo = { id: string; image_url: string; caption: string | null };
+type Gift = { id: string; name: string; description: string | null; price: number; image_url: string | null; link: string | null };
+type Suggestion = { id: string; name: string; description: string | null; category: string | null; suggested_price: number; image_url: string };
 
 function Editor() {
   const { siteId } = Route.useParams();
