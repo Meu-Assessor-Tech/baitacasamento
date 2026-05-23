@@ -265,7 +265,7 @@ function Editor() {
                           <Input type="number" step="0.01" value={g.price} onChange={e => updateGift(g.id, { price: Number(e.target.value) })} placeholder="Preço" />
                           <Input value={g.link ?? ""} onChange={e => updateGift(g.id, { link: e.target.value })} placeholder="Link (opcional)" />
                         </div>
-                        <Textarea rows={2} value={g.description} onChange={e => updateGift(g.id, { description: e.target.value })} placeholder="Descrição" />
+                        <Textarea rows={2} value={g.description ?? ""} onChange={e => updateGift(g.id, { description: e.target.value })} placeholder="Descrição" />
                       </div>
                       <div className="flex flex-col gap-2">
                         <Button size="sm" variant="outline" onClick={() => saveGift(g)} className="rounded-full">Salvar</Button>
