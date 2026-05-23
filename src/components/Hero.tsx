@@ -46,7 +46,7 @@ export function Hero() {
             className="mt-10 flex flex-col sm:flex-row gap-4"
           >
             <a
-              href="#comecar"
+              href="/auth"
               className="group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-primary text-primary-foreground text-sm tracking-wide hover:opacity-90 transition-all shadow-soft"
             >
               Começar nosso site

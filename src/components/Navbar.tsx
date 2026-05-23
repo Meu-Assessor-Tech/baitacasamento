@@ -20,13 +20,13 @@ export function Navbar() {
           <a href="#historias" className="hover:text-foreground transition-colors">Histórias</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a href="#login" className="hidden sm:inline text-sm text-muted-foreground hover:text-foreground transition-colors">Entrar</a>
-          <a
-            href="#comecar"
+          <Link to="/auth" className="hidden sm:inline text-sm text-muted-foreground hover:text-foreground transition-colors">Entrar</Link>
+          <Link
+            to="/auth"
             className="text-sm px-4 py-2 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
             Criar nosso site
-          </a>
+          </Link>
         </div>
       </div>
     </motion.header>
