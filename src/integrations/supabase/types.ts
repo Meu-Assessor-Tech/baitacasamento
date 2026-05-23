@@ -14,7 +14,169 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gift_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          link: string | null
+          name: string
+          price: number
+          reserved: boolean
+          site_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          name: string
+          price?: number
+          reserved?: boolean
+          site_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          name?: string
+          price?: number
+          reserved?: boolean
+          site_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_items_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gift_suggestions: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          name: string
+          suggested_price: number
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          name: string
+          suggested_price?: number
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          name?: string
+          suggested_price?: number
+        }
+        Relationships: []
+      }
+      site_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          site_id: string
+          sort_order: number
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          site_id: string
+          sort_order?: number
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          site_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_photos_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wedding_sites: {
+        Row: {
+          bride_name: string
+          created_at: string
+          groom_name: string
+          hero_image_url: string | null
+          id: string
+          is_published: boolean
+          location: string | null
+          owner_id: string
+          pix_key: string | null
+          slug: string
+          story: string | null
+          updated_at: string
+          wedding_date: string | null
+          welcome_message: string | null
+        }
+        Insert: {
+          bride_name?: string
+          created_at?: string
+          groom_name?: string
+          hero_image_url?: string | null
+          id?: string
+          is_published?: boolean
+          location?: string | null
+          owner_id: string
+          pix_key?: string | null
+          slug: string
+          story?: string | null
+          updated_at?: string
+          wedding_date?: string | null
+          welcome_message?: string | null
+        }
+        Update: {
+          bride_name?: string
+          created_at?: string
+          groom_name?: string
+          hero_image_url?: string | null
+          id?: string
+          is_published?: boolean
+          location?: string | null
+          owner_id?: string
+          pix_key?: string | null
+          slug?: string
+          story?: string | null
+          updated_at?: string
+          wedding_date?: string | null
+          welcome_message?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
