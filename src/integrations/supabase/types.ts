@@ -243,7 +243,12 @@ export type Database = {
       }
     }
     Functions: {
+      get_my_site_pix: { Args: { _site_id: string }; Returns: string }
       get_site_pix: { Args: { _slug: string }; Returns: string }
+      set_my_site_pix: {
+        Args: { _pix: string; _site_id: string }
+        Returns: undefined
+      }
       site_is_accessible: { Args: { _site_id: string }; Returns: boolean }
     }
     Enums: {
