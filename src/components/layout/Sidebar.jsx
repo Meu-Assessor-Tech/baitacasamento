@@ -1,0 +1,63 @@
+import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Heart, LayoutDashboard, Image, Edit3, Gift, Share2, Settings, LogOut } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+
+const navItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+  { icon: Image, label: 'Templates', path: '/templates' },
+  { icon: Edit3, label: 'Editor', path: '/editor' },
+  { icon: Gift, label: 'Presentes', path: '/editor?tab=gifts' },
+  { icon: Share2, label: 'Compartilhar', path: '/editor?tab=share' },
+  { icon: Settings, label: 'Configurações', path: '/dashboard?tab=settings' },
+]
+
+export default function Sidebar() {
+  const location = useLocation()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  return (
+    <div className="w-60 min-h-screen bg-white border-r border-stone-100 flex flex-col py-6">
+      <div className="px-6 mb-8">
+        <Link to="/" className="flex items-center gap-2">
+          <Heart size={16} className="text-sand-600 fill-sand-600" />
+          <span className="font-serif text-base font-medium text-stone-900">Nosso Dia</span>
+        </Link>
+      </div>
+
+      <nav className="flex-1 px-3">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path.split('?')[0]
+          return (
+            <Link key={item.path} to={item.path}>
+              <motion.div
+                whileHover={{ x: 2 }}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition-colors ${
+                  isActive
+                    ? 'bg-stone-900 text-white'
+                    : 'text-stone-500 hover:bg-stone-50 hover:text-stone-800'
+                }`}
+              >
+                <item.icon size={16} />
+                <span className="text-sm font-medium">{item.label}</span>
+              </motion.div>
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="px-3">
+        <motion.button
+          whileHover={{ x: 2 }}
+          onClick={() => { logout(); navigate('/') }}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-stone-400 hover:bg-stone-50 hover:text-stone-700 transition-colors"
+        >
+          <LogOut size={16} />
+          <span className="text-sm font-medium">Sair</span>
+        </motion.button>
+      </div>
+    </div>
+  )
+}

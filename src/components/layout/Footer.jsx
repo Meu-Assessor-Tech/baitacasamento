@@ -1,0 +1,44 @@
+import { Link } from 'react-router-dom'
+import { Heart } from 'lucide-react'
+
+export default function Footer() {
+  return (
+    <footer className="bg-stone-900 text-stone-400 py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <Heart size={18} className="text-sand-400 fill-sand-400" />
+              <span className="font-serif text-lg text-white">Nosso Dia</span>
+            </div>
+            <p className="text-sm text-stone-500 leading-relaxed max-w-xs">
+              Crie o site do seu casamento com elegância e simplicidade. Para o dia mais especial da sua vida.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-stone-300 uppercase tracking-widest mb-4">Produto</h4>
+            <ul className="space-y-3">
+              {['Templates', 'Funcionalidades', 'Preços', 'Exemplos'].map(item => (
+                <li key={item}><a href="#" className="text-sm hover:text-white transition-colors">{item}</a></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-stone-300 uppercase tracking-widest mb-4">Empresa</h4>
+            <ul className="space-y-3">
+              {['Sobre', 'Blog', 'Contato', 'Privacidade'].map(item => (
+                <li key={item}><a href="#" className="text-sm hover:text-white transition-colors">{item}</a></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-stone-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-stone-600">© 2024 Nosso Dia. Todos os direitos reservados.</p>
+          <p className="text-xs text-stone-600 flex items-center gap-1">
+            Feito com <Heart size={12} className="text-sand-500 fill-sand-500" /> para casais apaixonados
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}

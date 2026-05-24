@@ -1,0 +1,23 @@
+export const mockWedding = {
+  id: '1',
+  slug: 'ana-e-pedro',
+  groomName: 'Pedro',
+  brideName: 'Ana',
+  date: '2025-09-20',
+  venue: 'Fazenda Santa Bárbara, São Paulo',
+  message: 'Cada momento ao seu lado é uma eternidade que escolho viver.',
+  story: 'Nos conhecemos em uma tarde de setembro de 2019, em uma pequena livraria no centro da cidade. Pedro estava procurando um livro de poesias, e Ana tropeçou literalmente nele...',
+  coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200',
+  galleryImages: [
+    'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600',
+    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600',
+    'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600',
+    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600',
+    'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600',
+    'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600',
+  ],
+  template: 'classic',
+  primaryColor: '#8B6F5E',
+  guestCount: 47,
+  rsvpEnabled: true,
+};

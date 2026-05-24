@@ -1,0 +1,26 @@
+import { Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { WeddingProvider } from './context/WeddingContext'
+import Landing from './pages/Landing'
+import Auth from './pages/Auth'
+import Dashboard from './pages/Dashboard'
+import Templates from './pages/Templates'
+import Editor from './pages/Editor'
+import WeddingSite from './pages/WeddingSite'
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <WeddingProvider>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/editor" element={<Editor />} />
+          <Route path="/site/:slug" element={<WeddingSite />} />
+        </Routes>
+      </WeddingProvider>
+    </AuthProvider>
+  )
+}
