@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { ArrowLeft, Upload, Trash2, Plus, ExternalLink, Sparkles } from "lucide-react";
 
-export const Route = createFileRoute("/dashboard/$siteId")({
+export const Route = createFileRoute("/dashboard_/$siteId")({
   component: Editor,
   head: () => ({ meta: [{ title: "Editar site — Nosso Sonho" }] }),
 });

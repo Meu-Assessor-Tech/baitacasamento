@@ -13,7 +13,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SSlugRouteImport } from './routes/s.$slug'
-import { Route as DashboardSiteIdRouteImport } from './routes/dashboard.$siteId'
+import { Route as DashboardSiteIdRouteImport } from './routes/dashboard_.$siteId'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -36,22 +36,22 @@ const SSlugRoute = SSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardSiteIdRoute = DashboardSiteIdRouteImport.update({
-  id: '/$siteId',
-  path: '/$siteId',
-  getParentRoute: () => DashboardRoute,
+  id: '/dashboard_/$siteId',
+  path: '/dashboard/$siteId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/dashboard/$siteId': typeof DashboardSiteIdRoute
   '/s/$slug': typeof SSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/dashboard/$siteId': typeof DashboardSiteIdRoute
   '/s/$slug': typeof SSlugRoute
 }
@@ -59,8 +59,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRouteWithChildren
-  '/dashboard/$siteId': typeof DashboardSiteIdRoute
+  '/dashboard': typeof DashboardRoute
+  '/dashboard_/$siteId': typeof DashboardSiteIdRoute
   '/s/$slug': typeof SSlugRoute
 }
 export interface FileRouteTypes {
@@ -73,14 +73,15 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
-    | '/dashboard/$siteId'
+    | '/dashboard_/$siteId'
     | '/s/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
+  DashboardSiteIdRoute: typeof DashboardSiteIdRoute
   SSlugRoute: typeof SSlugRoute
 }
 
@@ -114,32 +115,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/$siteId': {
-      id: '/dashboard/$siteId'
-      path: '/$siteId'
+    '/dashboard_/$siteId': {
+      id: '/dashboard_/$siteId'
+      path: '/dashboard/$siteId'
       fullPath: '/dashboard/$siteId'
       preLoaderRoute: typeof DashboardSiteIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface DashboardRouteChildren {
-  DashboardSiteIdRoute: typeof DashboardSiteIdRoute
-}
-
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardSiteIdRoute: DashboardSiteIdRoute,
-}
-
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRouteWithChildren,
+  DashboardRoute: DashboardRoute,
+  DashboardSiteIdRoute: DashboardSiteIdRoute,
   SSlugRoute: SSlugRoute,
 }
 export const routeTree = rootRouteImport
