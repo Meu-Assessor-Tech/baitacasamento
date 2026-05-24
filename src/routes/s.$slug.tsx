@@ -14,16 +14,20 @@ function PublicSite() {
   const [gifts, setGifts] = useState<any[]>([]);
   const [notFound, setNotFound] = useState(false);
 
+  const [pix, setPix] = useState<string | null>(null);
+
   useEffect(() => {
     (async () => {
-      const { data: s } = await supabase.from("wedding_sites").select("*").eq("slug", slug).maybeSingle();
+      const { data: s } = await (supabase.from("wedding_sites_public" as any) as any).select("*").eq("slug", slug).maybeSingle();
       if (!s) { setNotFound(true); return; }
       setSite(s);
-      const [{ data: p }, { data: g }] = await Promise.all([
+      const [{ data: p }, { data: g }, { data: pixData }] = await Promise.all([
         supabase.from("site_photos").select("*").eq("site_id", s.id).order("sort_order"),
         supabase.from("gift_items").select("*").eq("site_id", s.id).order("sort_order"),
+        (supabase.rpc as any)("get_site_pix", { _slug: slug }),
       ]);
       setPhotos(p ?? []); setGifts(g ?? []);
+      setPix((pixData as string | null) ?? null);
     })();
   }, [slug]);
 
@@ -102,10 +106,10 @@ function PublicSite() {
             <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-4 text-center">Lista de presentes</p>
             <h2 className="font-serif text-4xl md:text-5xl text-center mb-4">Nossos sonhos</h2>
             <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">Sua presença é nosso maior presente, mas se quiser nos brindar, ficamos imensamente gratos.</p>
-            {site.pix_key && (
+            {pix && (
               <div className="text-center mb-10 inline-block mx-auto w-full">
                 <div className="inline-block px-5 py-3 rounded-full bg-background border text-sm">
-                  PIX: <span className="font-mono">{site.pix_key}</span>
+                  PIX: <span className="font-mono">{pix}</span>
                 </div>
               </div>
             )}

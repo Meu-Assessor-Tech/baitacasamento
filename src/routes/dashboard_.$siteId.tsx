@@ -35,8 +35,11 @@ function Editor() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data: s } = await supabase.from("wedding_sites").select("*").eq("id", siteId).single();
-      setSite(s);
+      const { data: s } = await supabase.from("wedding_sites")
+        .select("id,owner_id,slug,bride_name,groom_name,wedding_date,location,story,welcome_message,hero_image_url,is_published,created_at,updated_at")
+        .eq("id", siteId).single();
+      const { data: pix } = await (supabase.rpc as any)("get_my_site_pix", { _site_id: siteId });
+      setSite(s ? { ...s, pix_key: (pix as string | null) ?? "" } : null);
       const { data: p } = await supabase.from("site_photos").select("*").eq("site_id", siteId).order("sort_order");
       setPhotos(p ?? []);
       const { data: g } = await supabase.from("gift_items").select("*").eq("site_id", siteId).order("sort_order");
@@ -53,10 +56,11 @@ function Editor() {
       bride_name: site.bride_name, groom_name: site.groom_name,
       wedding_date: site.wedding_date, location: site.location,
       story: site.story, welcome_message: site.welcome_message,
-      pix_key: site.pix_key, slug: site.slug,
+      slug: site.slug,
     }).eq("id", siteId);
+    const { error: pixErr } = await (supabase.rpc as any)("set_my_site_pix", { _site_id: siteId, _pix: site.pix_key ?? "" });
     setSaving(false);
-    if (error) toast.error(error.message);
+    if (error || pixErr) toast.error((error ?? pixErr)!.message);
     else toast.success("Salvo!");
   };
 

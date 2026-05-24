@@ -59,6 +59,13 @@ export type Database = {
             referencedRelation: "wedding_sites"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "gift_items_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_sites_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       gift_suggestions: {
@@ -124,6 +131,13 @@ export type Database = {
             referencedRelation: "wedding_sites"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "site_photos_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_sites_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       wedding_sites: {
@@ -179,10 +193,63 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      wedding_sites_public: {
+        Row: {
+          bride_name: string | null
+          created_at: string | null
+          groom_name: string | null
+          hero_image_url: string | null
+          id: string | null
+          is_published: boolean | null
+          location: string | null
+          owner_id: string | null
+          slug: string | null
+          story: string | null
+          updated_at: string | null
+          wedding_date: string | null
+          welcome_message: string | null
+        }
+        Insert: {
+          bride_name?: string | null
+          created_at?: string | null
+          groom_name?: string | null
+          hero_image_url?: string | null
+          id?: string | null
+          is_published?: boolean | null
+          location?: string | null
+          owner_id?: string | null
+          slug?: string | null
+          story?: string | null
+          updated_at?: string | null
+          wedding_date?: string | null
+          welcome_message?: string | null
+        }
+        Update: {
+          bride_name?: string | null
+          created_at?: string | null
+          groom_name?: string | null
+          hero_image_url?: string | null
+          id?: string | null
+          is_published?: boolean | null
+          location?: string | null
+          owner_id?: string | null
+          slug?: string | null
+          story?: string | null
+          updated_at?: string | null
+          wedding_date?: string | null
+          welcome_message?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_my_site_pix: { Args: { _site_id: string }; Returns: string }
+      get_site_pix: { Args: { _slug: string }; Returns: string }
+      set_my_site_pix: {
+        Args: { _pix: string; _site_id: string }
+        Returns: undefined
+      }
+      site_is_accessible: { Args: { _site_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
