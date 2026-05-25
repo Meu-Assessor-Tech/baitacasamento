@@ -25,7 +25,7 @@ function CountUnit({ value, label }) {
           {String(value).padStart(2, '0')}
         </span>
       </div>
-      <span className="text-[8px] uppercase tracking-[0.45em] text-stone-400 font-sans">{label}</span>
+      <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-stone-400 font-sans">{label}</span>
     </div>
   )
 }
@@ -48,7 +48,7 @@ function Ornament({ className = '' }) {
 /* ── Section label ─────────────────────────────────────────────── */
 function SectionLabel({ children }) {
   return (
-    <p className="text-[9px] uppercase tracking-[0.6em] text-sand-500 mb-5 font-sans font-medium">
+    <p className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-sand-500 mb-5 font-sans font-medium">
       {children}
     </p>
   )
@@ -132,7 +132,7 @@ export default function WeddingSite() {
         >
           <motion.p
             variants={fadeUp}
-            className="text-[9px] uppercase tracking-[0.7em] text-white/40 mb-12 font-sans font-light"
+            className="text-xs sm:text-sm uppercase tracking-[0.28em] text-white/70 mb-10 sm:mb-12 font-sans font-light"
           >
             Save the Date
           </motion.p>
@@ -161,14 +161,14 @@ export default function WeddingSite() {
 
           <motion.p
             variants={fadeUp}
-            className="mt-12 text-[10px] uppercase tracking-[0.5em] text-white/38 capitalize"
+            className="mt-10 sm:mt-12 text-sm sm:text-base uppercase tracking-[0.2em] text-white/80 capitalize"
           >
             {dateShort}
           </motion.p>
 
           <motion.p
             variants={fadeUp}
-            className="mt-2.5 text-[9px] uppercase tracking-[0.45em] text-white/25"
+            className="mt-2.5 text-xs sm:text-sm uppercase tracking-[0.14em] text-white/75"
           >
             {wedding.venue}
           </motion.p>
@@ -186,7 +186,7 @@ export default function WeddingSite() {
 
       {/* ━━━━ INFO STRIP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section className="bg-white border-y border-stone-100">
-        <div className="max-w-3xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0">
+        <div className="max-w-3xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0">
           {[
             { icon: Calendar, label: 'Data',    value: dateLong },
             { icon: MapPin,   label: 'Local',   value: wedding.venue },
@@ -194,13 +194,13 @@ export default function WeddingSite() {
           ].map(({ icon: Icon, label, value }, i) => (
             <div
               key={i}
-              className={`flex flex-col items-center text-center gap-3 px-6 ${
+              className={`flex flex-col items-center text-center gap-3.5 px-6 ${
                 i < 2 ? 'sm:border-r border-stone-100' : ''
               }`}
             >
-              <Icon size={13} strokeWidth={1.5} className="text-sand-400" />
-              <p className="text-[8px] uppercase tracking-[0.55em] text-stone-400">{label}</p>
-              <p className="text-[13px] text-stone-600 font-light leading-relaxed capitalize max-w-[175px]">
+              <Icon size={15} strokeWidth={1.7} className="text-sand-400" />
+              <p className="text-[11px] sm:text-xs uppercase tracking-[0.24em] text-stone-500">{label}</p>
+              <p className="text-[15px] sm:text-base text-stone-700 font-light leading-relaxed capitalize max-w-[220px]">
                 {value}
               </p>
             </div>
@@ -346,7 +346,7 @@ export default function WeddingSite() {
             {wedding.galleryImages.length > 7 && (
               <motion.p
                 variants={fadeUp}
-                className="mt-6 text-center text-[10px] uppercase tracking-widest text-stone-400 font-light"
+                className="mt-6 text-center text-xs uppercase tracking-[0.2em] text-stone-400 font-light"
               >
                 + {wedding.galleryImages.length - 7} fotos
               </motion.p>
@@ -399,7 +399,7 @@ export default function WeddingSite() {
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-[8px] uppercase tracking-[0.45em] text-stone-400 mb-1.5">
+                  <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-stone-400 mb-1.5">
                     {gift.category}
                   </p>
                   <h3 className="font-medium text-stone-900 text-sm leading-snug mb-0.5">
