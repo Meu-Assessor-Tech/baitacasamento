@@ -1,8 +1,18 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import Badge from '../ui/Badge'
+import { templateConfigs } from '../../data/templateConfigs'
+
+const PREVIEW_BG = {
+  classic: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600',
+  minimal: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600',
+  floral: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600',
+}
 
 export default function TemplateCard({ template, selected, onSelect }) {
+  const cfg = templateConfigs[template.id] || templateConfigs.classic
+  const bg = PREVIEW_BG[template.id] || template.preview
+
   return (
     <motion.div
       whileHover={{ y: -6 }}
@@ -12,12 +22,28 @@ export default function TemplateCard({ template, selected, onSelect }) {
         selected ? 'border-stone-900 shadow-xl' : 'border-stone-100 hover:border-stone-300 shadow-sm'
       }`}
     >
-      <div className="aspect-[4/3] overflow-hidden">
-        <img
-          src={template.preview}
-          alt={template.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      {/* Rendered mini-preview */}
+      <div className="aspect-[4/3] relative overflow-hidden">
+        <img src={bg} alt={template.name} className="w-full h-full object-cover" />
+        <div
+          className="absolute inset-0"
+          style={{ background: cfg.heroBg }}
         />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-white text-center">
+          <p className={cfg.labelClass.replace('mb-6', 'mb-2').replace('mb-8', 'mb-2')}>
+            Save the Date
+          </p>
+          <p
+            className={`${cfg.nameClass} leading-tight text-white`}
+            style={{ fontSize: template.id === 'minimal' ? '1.1rem' : '1.25rem', ...cfg.nameStyle }}
+          >
+            Sofia <span className={cfg.ampersandClass} style={{ fontSize: '0.9rem' }}>&</span> Lucas
+          </p>
+          <p className={cfg.dateClass.replace('mb-10', 'mt-2 mb-0').replace('mb-8', 'mt-2 mb-0')}
+            style={{ fontSize: '0.65rem' }}>
+            20 de setembro de 2025
+          </p>
+        </div>
       </div>
 
       {selected && (

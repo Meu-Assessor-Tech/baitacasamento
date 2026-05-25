@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Monitor, Smartphone, Save, Upload, Plus, Check } from 'lucide-react'
+import { Monitor, Smartphone, Save, Upload, Plus, Check, Trash2, Eye } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../components/layout/Sidebar'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import { useWedding } from '../../context/WeddingContext'
 import { mockGifts } from '../../data/mockGifts'
+import { templateConfigs } from '../../data/templateConfigs'
 
 const TABS = [
   { id: 'content', label: 'Conteúdo' },
@@ -23,15 +25,49 @@ const COLORS = [
   { label: 'Dourado', value: '#B8922A' },
 ]
 
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = e => resolve(e.target.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
 export default function Editor() {
-  const { wedding, updateWedding } = useWedding()
+  const { wedding, updateWedding, resetWedding } = useWedding()
   const [activeTab, setActiveTab] = useState('content')
   const [previewMode, setPreviewMode] = useState('desktop')
   const [saved, setSaved] = useState(false)
+  const coverInputRef = useRef(null)
+  const galleryInputRef = useRef(null)
+  const navigate = useNavigate()
+
+  const cfg = templateConfigs[wedding.template] || templateConfigs.classic
 
   const handleSave = () => {
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleCoverUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const dataUrl = await readFileAsDataURL(file)
+    updateWedding({ coverImage: dataUrl })
+    e.target.value = ''
+  }
+
+  const handleGalleryUpload = async (e) => {
+    const files = Array.from(e.target.files)
+    if (!files.length) return
+    const dataUrls = await Promise.all(files.map(readFileAsDataURL))
+    updateWedding({ galleryImages: [...wedding.galleryImages, ...dataUrls] })
+    e.target.value = ''
+  }
+
+  const removeGalleryImage = (index) => {
+    updateWedding({ galleryImages: wedding.galleryImages.filter((_, i) => i !== index) })
   }
 
   return (
@@ -58,6 +94,14 @@ export default function Editor() {
             ))}
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(`/site/${wedding.slug}`)}
+              title="Ver site publicado"
+            >
+              <Eye size={14} /> Ver site
+            </Button>
             <div className="hidden sm:flex items-center gap-1 bg-stone-100 rounded-full p-1">
               <button
                 onClick={() => setPreviewMode('desktop')}
@@ -129,6 +173,14 @@ export default function Editor() {
               {activeTab === 'design' && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                   <div>
+                    <h2 className="font-medium text-stone-900 text-sm mb-1">Template ativo</h2>
+                    <p className="text-xs text-stone-400 mb-3">{cfg.label}</p>
+                    <Button variant="outline" size="sm" fullWidth onClick={() => navigate('/templates')}>
+                      Trocar template
+                    </Button>
+                  </div>
+
+                  <div>
                     <h2 className="font-medium text-stone-900 text-sm mb-4">Cor principal</h2>
                     <div className="grid grid-cols-3 gap-2">
                       {COLORS.map(color => (
@@ -147,12 +199,59 @@ export default function Editor() {
                   </div>
 
                   <div>
-                    <h2 className="font-medium text-stone-900 text-sm mb-4">Foto de capa</h2>
-                    <div className="aspect-video rounded-xl overflow-hidden mb-3">
+                    <h2 className="font-medium text-stone-900 text-sm mb-3">Foto de capa</h2>
+                    <div className="aspect-video rounded-xl overflow-hidden mb-3 bg-stone-100">
                       <img src={wedding.coverImage} alt="Cover" className="w-full h-full object-cover" />
                     </div>
-                    <Button variant="outline" size="sm" fullWidth>
-                      <Upload size={14} /> Alterar foto
+                    <input
+                      ref={coverInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleCoverUpload}
+                    />
+                    <Button variant="outline" size="sm" fullWidth onClick={() => coverInputRef.current?.click()}>
+                      <Upload size={14} /> Alterar foto de capa
+                    </Button>
+                  </div>
+
+                  <div>
+                    <h2 className="font-medium text-stone-900 text-sm mb-3">Galeria de fotos</h2>
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {wedding.galleryImages.map((img, i) => (
+                        <div key={i} className="relative group aspect-square rounded-lg overflow-hidden bg-stone-100">
+                          <img src={img} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            onClick={() => removeGalleryImage(i)}
+                            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            <Trash2 size={14} className="text-white" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <input
+                      ref={galleryInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handleGalleryUpload}
+                    />
+                    <Button variant="outline" size="sm" fullWidth onClick={() => galleryInputRef.current?.click()}>
+                      <Plus size={14} /> Adicionar fotos à galeria
+                    </Button>
+                  </div>
+
+                  <div className="pt-2 border-t border-stone-100">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      fullWidth
+                      onClick={() => { if (confirm('Resetar todos os dados para o exemplo padrão?')) resetWedding() }}
+                      className="!text-red-400 hover:!text-red-600 hover:!bg-red-50"
+                    >
+                      Resetar dados
                     </Button>
                   </div>
                 </motion.div>
@@ -186,7 +285,14 @@ export default function Editor() {
                     <p className="text-xs text-stone-500 mb-2">Seu link exclusivo</p>
                     <p className="font-mono text-sm text-stone-900 break-all">nossodia.com/{wedding.slug}</p>
                   </div>
-                  <Button variant="primary" size="sm" fullWidth>Copiar link</Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    fullWidth
+                    onClick={() => navigator.clipboard?.writeText(`${window.location.origin}/site/${wedding.slug}`)}
+                  >
+                    Copiar link
+                  </Button>
                   <div className="pt-2">
                     <p className="text-xs text-stone-500 mb-3">Compartilhar via</p>
                     <div className="grid grid-cols-2 gap-2">
@@ -202,35 +308,47 @@ export default function Editor() {
             </div>
           </div>
 
+          {/* Preview */}
           <div className="flex-1 bg-stone-100 overflow-auto flex items-start justify-center p-6">
             <div className={`bg-white shadow-xl rounded-xl overflow-hidden transition-all duration-300 ${
               previewMode === 'mobile' ? 'w-80' : 'w-full max-w-3xl'
             }`}>
               <div className="relative" style={{ height: previewMode === 'mobile' ? '560px' : '500px' }}>
                 <img src={wedding.coverImage} alt="Preview" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className={`absolute inset-0`} style={{ background: cfg.heroBg }} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
-                  <p className="text-xs uppercase tracking-widest text-white/70 mb-4">Save the Date</p>
-                  <h1 className="font-serif text-4xl text-center mb-4 leading-tight" style={{ color: 'white' }}>
-                    {wedding.brideName} <span className="text-white/60">&</span> {wedding.groomName}
+                  <p className={cfg.labelClass}>Save the Date</p>
+                  <h1 className={`${cfg.nameClass} text-white`} style={cfg.nameStyle}>
+                    {wedding.brideName} <span className={cfg.ampersandClass}>&</span> {wedding.groomName}
                   </h1>
-                  <p className="text-white/80 text-sm mb-6">
+                  <p className={cfg.dateClass}>
                     {new Date(wedding.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                   </p>
-                  <p className="text-center text-white/70 text-xs max-w-xs italic">"{wedding.message}"</p>
+                  {cfg.messageClass !== 'hidden' && (
+                    <p className={cfg.messageClass}>"{wedding.message}"</p>
+                  )}
                   <div
-                    className="mt-8 px-6 py-3 rounded-full text-sm font-medium"
+                    className={`mt-8 px-6 py-3 text-sm font-semibold ${cfg.btnRadius}`}
                     style={{ backgroundColor: wedding.primaryColor, color: 'white' }}
                   >
                     Confirmar Presença
                   </div>
                 </div>
               </div>
-              <div className="px-6 py-8 text-center border-t border-stone-100">
-                <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Nossa História</p>
-                <h2 className="font-serif text-2xl text-stone-900 mb-3">Como nos conhecemos</h2>
-                <p className="text-sm text-stone-500 leading-relaxed line-clamp-3">{wedding.story}</p>
+              <div className={`px-6 py-8 text-center border-t ${cfg.altSectionBg} ${cfg.dividerDark}`}>
+                <p className={cfg.sectionLabelDarkClass}>Nossa História</p>
+                <h2 className={`${cfg.sectionHeadingDarkClass} text-2xl mb-3`}>Como nos conhecemos</h2>
+                <p className={`text-sm leading-relaxed line-clamp-3 opacity-60 ${cfg.altSectionText}`}>{wedding.story}</p>
               </div>
+              {wedding.galleryImages.length > 0 && (
+                <div className="px-6 pb-6 grid grid-cols-3 gap-2">
+                  {wedding.galleryImages.slice(0, 6).map((img, i) => (
+                    <div key={i} className="aspect-square rounded-lg overflow-hidden">
+                      <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -56,7 +56,7 @@ export default function Landing() {
               <Button
                 variant="primary"
                 size="lg"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/templates')}
                 className="!bg-white !text-stone-900 hover:!bg-stone-100 shadow-xl"
               >
                 Criar meu site grátis
@@ -316,7 +316,7 @@ export default function Landing() {
               Gratuito para começar. Sem cartão de crédito.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <Button variant="primary" size="xl" onClick={() => navigate('/login')}>
+              <Button variant="primary" size="xl" onClick={() => navigate('/templates')}>
                 Criar meu site agora
                 <ArrowRight size={18} />
               </Button>
